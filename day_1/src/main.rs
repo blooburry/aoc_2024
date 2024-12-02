@@ -17,10 +17,12 @@ fn main() -> std::io::Result<()> {
     
     let map = count_frequencies(&locations.1);
     let similarity = locations.0.iter()
-        .fold(0, |acc, e| {
-            let value = map.get(e).unwrap_or(&0);
-            acc + (*value as usize) * (*e as usize)
-        });
+    .map(|e| 
+        (map.get(e).unwrap_or(&0), e)
+    )
+    .fold(0, |acc, e| 
+        acc + (*e.0 as usize) * (*e.1 as usize)
+    );
 
     println!("similarity: {}", similarity);
 
